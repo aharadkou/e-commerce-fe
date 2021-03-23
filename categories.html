@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="backOfficeApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <link href="css/lib/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/ui-bootstrap-tpls.js"></script>
+    <script src="js/lib/angular-base64.min.js"></script>
+
+
+</head>
+<body>
+<div class="container" ng-controller="categoryController">
+    <h2>Categories</h2>
+    <table id="my_table" class="table">
+        <tr>
+            <td>Category name</td>
+            <td>Super category</td>
+            <td>Sub category</td>
+        </tr>
+        <tr ng-repeat = "category in categoryList" >
+            <td>
+                <input ng-disabled="setDisabled(category)" class="form-control"
+                       type="text" ng-model = "category.name"/>
+            </td>
+            <td>
+                <select class = "form-control"
+                        ng-model = "category.superCategoryId"
+                        ng-disabled="setDisabled(category)">
+                    <option ng-repeat = "cat in categoryList"
+                            ng-if = "cat.id != category.id"
+                            value = "{{cat.id}}"
+                            ng-value="{{cat.id}}">{{cat.name}}</option>
+                </select>
+            </td>
+            <td>
+                <select class="form-control"
+                        ng-model = "category.subCategoryId"
+                        ng-disabled="setDisabled(category)">
+                    <option ng-repeat = "cat in categoryList"
+                            ng-if = "cat.id != category.id"
+                            ng-value="{{cat.id}}"
+                            value = "{{cat.id}}">{{cat.name}}</option>
+                </select>
+
+            </td>
+            <td>
+                <input type="button" value="Update" class="btn btn-outline-primary" ng-click="setEditingId(category)"/>
+                <input type="button" value="Save" class="btn btn-primary" ng-click="updateCategory(category)"/>
+                <input type="button" value="Delete" class="btn btn-danger" ng-click="deleteCategory(category)"/>
+            </td>
+        </tr>
+    </table>
+    <ul uib-pagination
+        total-items="totalItems"
+        class="pagination" items-per-page="pageSize" total-items="numPages"
+        ng-model="curPage" ng-change="pageChanged()"></ul>
+    <div class="div-form">
+        <h2>Add category</h2>
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" type="text" ng-model = "category.name"/>
+            </div>
+            <div class="form-group">
+                <label>Super category</label>
+                <select class = "form-control"
+                        ng-model = "category.superCategoryId">
+                    <option ng-repeat="cat in categoryList"
+                            ng-if="cat.id != category.id"
+                            value="{{cat.id}}"
+                            ng-value="{{cat.id}}">{{cat.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sub category</label>
+                <select class="form-control"
+                        ng-model = "category.subCategoryId">
+                    <option ng-repeat="cat in categoryList"
+                            ng-if="cat.id != category.id"
+                            value="{{cat.id}}"
+                            ng-value="{{cat.id}}">{{cat.name}}</option>
+                </select>
+            </div>
+            <input type="button" class="btn btn-outline-success" value="Add" ng-click="saveCategory(category)"/>
+
+    </div>
+    <div class="div-form">
+        <h2>Find category by name</h2>
+        <input class="form-control" type="text" ng-model = "categoryName"/>
+        <input type="button" class="btn btn-outline-success" value="Find" ng-click="findByName(categoryName)" />
+        <h2>Founded category</h2>
+        <h3>Name:{{foundedCategory.name}}</h3>
+        <h3>Super category:{{foundedSuperCategory.name}}</h3>
+        <h3>Sub category:{{foundedSubCategory.name}}</h3>
+    </div>
+
+</div>
+<script src="js/controllers/categoryController.js"></script>
+<script type="text/javascript">
+    angular.module("backOfficeApp");
+</script>
+</body>
+</html>
